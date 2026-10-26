@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = os.environ["WTF_SECRET_KEY"]
 csrf = CSRFProtect(app)
-APP_TITLE = "Zona Fit (GYM)"
+APP_TITLE = "Fit Zone (GYM)"
 
 
 def render_index(client_form):

@@ -1,4 +1,4 @@
-# Zona Fit
+# Fit Zone
 
 A small Flask application to manage the clients of a gym: create, list, edit and delete clients, each with a name, last name and membership number.
 
@@ -68,14 +68,14 @@ Python packages are listed in `requirements.txt` (runtime) and `requirements-dev
 2. Create the database and its table:
 
    ```bash
-   createdb zona_fit_db
-   psql -d zona_fit_db -f schema.sql
+   createdb fit_zone_db
+   psql -d fit_zone_db -f schema.sql
    ```
 
    For the tests, create a second database whose name contains `test`:
 
    ```bash
-   createdb zona_fit_test_db
+   createdb fit_zone_test_db
    ```
 
 3. Create a `.env` file from the example and fill in your values:
@@ -90,7 +90,7 @@ Python packages are listed in `requirements.txt` (runtime) and `requirements-dev
    | `DB_PASSWORD`   | Password for that user                               |
    | `DB_HOST`       | Database host, usually `localhost`                   |
    | `DB_PORT`       | Database port, usually `5432`                        |
-   | `DB_NAME`       | Application database, for example `zona_fit_db`      |
+   | `DB_NAME`       | Application database, for example `fit_zone_db`      |
    | `WTF_SECRET_KEY`| Long random string used to sign CSRF tokens          |
 
    Generate a secret key with:
@@ -109,7 +109,7 @@ Then open <http://127.0.0.1:5000>.
 
 ## Running the tests
 
-The tests use `zona_fit_test_db`. The test configuration refuses to run against any database whose name does not contain `test`, so your application data is safe.
+The tests use `fit_zone_test_db`. The test configuration refuses to run against any database whose name does not contain `test`, so your application data is safe.
 
 ```bash
 pytest -q

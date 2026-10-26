@@ -1,7 +1,7 @@
 import os
 
 # Must be set before the models are imported, so the tests use the test database.
-os.environ["DB_NAME"] = "zona_fit_test_db"
+os.environ["DB_NAME"] = "fit_zone_test_db"
 os.environ.setdefault("WTF_SECRET_KEY", "test-secret-key")
 
 import pytest
