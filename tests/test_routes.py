@@ -24,6 +24,8 @@ def test_edit_prefills_form_with_client_data(web, insert_client):
     assert response.status_code == 200
     assert 'value="Ivonne"' in body
     assert f'value="{client_id}"' in body
+    # A relative action would post to /edit/save from this page.
+    assert 'action="/save"' in body
 
 
 def test_edit_unknown_client_returns_404(web):
