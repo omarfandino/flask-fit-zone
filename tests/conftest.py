@@ -6,7 +6,9 @@ os.environ.setdefault("WTF_SECRET_KEY", "test-secret-key")
 
 import pytest
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
+import models.client  # noqa: F401  registers the client table in Base.metadata
 from models.database import Base, engine, get_session
 
 if "test" not in engine.url.database:
@@ -15,7 +17,15 @@ if "test" not in engine.url.database:
 
 @pytest.fixture(scope="session", autouse=True)
 def database_schema():
-    Base.metadata.create_all(engine)
+    try:
+        Base.metadata.create_all(engine)
+    except SQLAlchemyError as error:
+        reason = str(error.orig).strip() if error.orig else str(error)
+        pytest.exit(
+            f"Cannot prepare the test database '{engine.url.database}': {reason}\n"
+            "See 'Database setup' in README.md.",
+            returncode=1,
+        )
     yield
     Base.metadata.drop_all(engine)
 

@@ -65,18 +65,21 @@ Python packages are listed in `requirements.txt` (runtime) and `requirements-dev
    pip install -r requirements-dev.txt
    ```
 
-2. Create the database and its table:
+2. Database setup. Run these as the PostgreSQL superuser (for example `sudo -u postgres psql`). Skip the first command if you already have a role you want to use.
 
-   ```bash
-   createdb fit_zone_db
-   psql -d fit_zone_db -f schema.sql
+   ```sql
+   CREATE ROLE fit_zone_user LOGIN PASSWORD 'change-me';
+   CREATE DATABASE fit_zone_db OWNER fit_zone_user;
+   CREATE DATABASE fit_zone_test_db OWNER fit_zone_user;
    ```
 
-   For the tests, create a second database whose name contains `test`:
+   Then create the application table, connected as that role:
 
    ```bash
-   createdb fit_zone_test_db
+   psql -U fit_zone_user -h localhost -d fit_zone_db -f schema.sql
    ```
+
+   The role must **own** both databases. Since PostgreSQL 15 only the owner can create tables in the `public` schema by default, and the tests create and drop their tables on every run. The test database needs no table: the tests create it from the models.
 
 3. Create a `.env` file from the example and fill in your values:
 
@@ -109,7 +112,7 @@ Then open <http://127.0.0.1:5000>.
 
 ## Running the tests
 
-The tests use `fit_zone_test_db`. The test configuration refuses to run against any database whose name does not contain `test`, so your application data is safe.
+The tests use `fit_zone_test_db`, with the user, password and host from `.env`. The test configuration refuses to run against any database whose name does not contain `test`, so your application data is safe. If the test database is missing or the role lacks permissions, pytest stops with a message that says what failed.
 
 ```bash
 pytest -q
